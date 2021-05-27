@@ -1,0 +1,15 @@
+name: AUTO docs deploy to netlify
+on: [push, workflow_dispatch]
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    name: Deploy docs to Netlify.
+    steps:
+      - uses: actions/checkout@v2
+      - name: Install packages.
+        run: yarn install 
+      - name: Deploy built docs-app to Netlify.
+        env:
+          NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_ACCESS_TOKEN__PR_PREVIEW_REPO }}
+          NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
+        run: npx netlify deploy --dir ./page

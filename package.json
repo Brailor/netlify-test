@@ -1,0 +1,22 @@
+{
+  "name": "netlify-test",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Brailor/netlify-test.git"
+  },
+  "author": "Viktor Ohad",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Brailor/netlify-test/issues"
+  },
+  "homepage": "https://github.com/Brailor/netlify-test#readme",
+  "devDependencies": {
+    "netlify-cli": "^3.31.7"
+  }
+}
