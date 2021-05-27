@@ -1,5 +1,5 @@
 name: AUTO docs deploy to netlify
-on: [push, workflow_dispatch]
+on: [pull_request]
 jobs:
   deploy:
     runs-on: ubuntu-latest
@@ -16,4 +16,10 @@ jobs:
         run: echo "::set-output name=url::$(npx netlify deploy --dir ./page | grep "Website Draft URL" | awk '{print $4}')"
       - name: Test previous step output.
         run: echo ${{ steps.deploy_to_netlify.outputs.url }}
+      - name: Add Comment to PR with the preview URL.
+        uses: actions-cool/maintain-one-comment@v2.0.0
+        with: 
+          token: ${{ secrets.GITHUB_TOKEN }}
+          body: |
+            Preview URL: ${{ steps.deploy_to_netlify.outputs.url }}
 
