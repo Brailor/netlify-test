@@ -9,7 +9,11 @@ jobs:
       - name: Install packages.
         run: yarn install 
       - name: Deploy built docs-app to Netlify.
+        id: deploy_to_netlify
         env:
           NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_ACCESS_TOKEN__PR_PREVIEW_REPO }}
           NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
-        run: npx netlify deploy --dir ./page
+        run: echo "::set-output name=url::$(npx netlify deploy --dir ./page | grep "Website Draft URL" | awk '{print $4}')"
+      - name: Test previous step output.
+        run: echo ${{ steps.deploy_to_netlify.outputs.url }}
+
