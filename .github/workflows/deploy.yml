@@ -1,5 +1,5 @@
 name: AUTO docs deploy to netlify
-on: [pull_request]
+on: [pull_request, workflow_dispatch]
 jobs:
   deploy:
     runs-on: ubuntu-latest
@@ -10,16 +10,19 @@ jobs:
         run: yarn install 
       - name: Deploy built docs-app to Netlify.
         id: deploy_to_netlify
+        continue-on-error: true
         env:
           NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_ACCESS_TOKEN__PR_PREVIEW_REPO }}
           NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
-        run: echo "::set-output name=url::$(npx netlify deploy --dir ./page | grep "Website Draft URL" | awk '{print $4}')"
+        # run: echo "::set-output name=url::$(npx netlify deploy --dir ./page | grep "Website Draft URL" | awk '{print $4}')"
+        run: exit 1
       - name: Test previous step output.
-        run: echo ${{ steps.deploy_to_netlify.outputs.url }}
-      - name: Add Comment to PR with the preview URL.
-        uses: actions-cool/maintain-one-comment@v2.0.0
-        with: 
-          token: ${{ secrets.GITHUB_TOKEN }}
-          body: |
-            Preview URL: ${{ steps.deploy_to_netlify.outputs.url }}
+        if: ${{ success() }}
+        run: echo "Run after failed step"
+      # - name: Add Comment to PR with the preview URL.
+      #   uses: actions-cool/maintain-one-comment@v2.0.0
+      #   with: 
+      #     token: ${{ secrets.GITHUB_TOKEN }}
+      #     body: |
+      #       Preview URL: ${{ steps.deploy_to_netlify.outputs.url }}
 
