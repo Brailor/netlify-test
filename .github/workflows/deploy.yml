@@ -15,7 +15,7 @@ jobs:
           NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_ACCESS_TOKEN__PR_PREVIEW_REPO }}
           NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
         # run: echo "::set-output name=url::$(npx netlify deploy --dir ./page | grep "Website Draft URL" | awk '{print $4}')"
-        run: exit 1
+        run: exit 0
       - name: Test previous step output.
         if: ${{ steps.deploy_to_netlify.outcome == 'success' }}
         run: echo "success"
